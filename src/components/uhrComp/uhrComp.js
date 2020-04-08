@@ -2,38 +2,39 @@ import React from 'react';
 import Intl from 'intl'
 import 'intl/locale-data/jsonp/de-DE'
 import  './UhrComp.css'
+import moment from 'moment'
+import 'moment/locale/de'
+
 
 export default class UhrComp extends React.Component {
     showSecond = true;
     onlyClock = true;
     onlyDate = true;
 
-    constructor() {
-        super();
-        this.state = {}
+    constructor(props) {
+        super(props);
+        this.state = {props: this.props}
     }
+
     componentDidMount() {
-        if(this.props.clockColor) {
-            document.querySelector("div#uhrcomp > div.highlight-card > span.the_clock").style.color = this.props.clockColor;
-        }
-        if(this.props.dateColor) {
-            document.querySelector("div#uhrcomp > div.highlight-card > span.the_date").style.color = this.props.dateColor;
-        }
-        if(this.props.bgColor) {
-            document.querySelector("div#uhrcomp").style.backgroundColor  = this.props.bgColor;
+        this.test();
+    }
+    test() {
+        console.log(this.props.showSecond +"  uhrComp test")
+        if(this.props.whatshow === 'only_clock') {
+            this.onlyDate = false;
+            this.onlyClock = true;
+        } else if (this.props.whatshow === 'only_date') {
+            this.onlyClock = false;
+            this.onlyDate = true;
+        } else {
+            this.onlyClock = true;
+            this.onlyDate = true;
         }
         if(this.props.showSecond === false) {
             this.showSecond = false;
         } else {
             this.showSecond = true;
-        }
-        if(this.props.whatshow === 'only_clock') {
-            this.onlyDate = false;
-        } else if (this.props.whatshow === 'only_date') {
-            this.onlyClock = false;
-        } else {
-            this.onlyClock = true;
-            this.onlyDate = true;
         }
         this.intervalID = setInterval(() => this.tick(), 1000);
       }
@@ -41,29 +42,34 @@ export default class UhrComp extends React.Component {
       componentWillUnmount() {
         clearInterval(this.intervaId);
       }
+      async componentWillReceiveProps( props ) {
+          this.props = props;
+          console.log(props.dateFormat +" uhrComp receiveprops")
+          this.setState({props: props});
+          this.test()
+        }
     tick() {
         //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-        const dateFormat = {weekday: "long", month: "long", day: "numeric", year: "numeric"};
-        const hourFormat = {hour: "numeric", hour12: false};
-        const minuteFormat = {minute: "numeric"};
-        const secondFormat = {second: "numeric"};
-        const date = new Date();
-        const formatedDate = new Intl.DateTimeFormat("de-DE", dateFormat).format(date)
+        var format='MMM YYYY'
+        if(this.props.dateFormat) {
+            format = this.props.dateFormat
+        }
         this.setState({
-            hour: new Intl.DateTimeFormat("de-DE", hourFormat).format(date),
-            minute: new Intl.DateTimeFormat("de-DE", minuteFormat).format(date),
-            second: new Intl.DateTimeFormat("de-DE", secondFormat).format(date),
-            date: formatedDate
+            hour: moment().format('hh'),//new Intl.DateTimeFormat("de-DE", hourFormat).format(date)
+            minute: moment().format('mm'),//new Intl.DateTimeFormat("de-DE", minuteFormat).format(date)
+            second: moment().format('ss'),//new Intl.DateTimeFormat("de-DE", secondFormat).format(date)
+            date: moment().format(format)
         });
       }
 
     render() {
+        console.log(this.state.props.dateFormat+ " uhrComp render")
         return (
-            <div className="uhrcard" id ="uhrcomp" target="_blank" rel="noopener">
+            <div className="uhrcard" id ="uhrcomp" target="_blank" rel="noopener" style={{backgroundColor: this.state.props.bgColor}}>
             <div className="highlight-uhrcard">
             {
                 this.onlyClock &&
-                <span className="the_clock">
+                <span className="the_clock" style={{color: this.state.props.clockColor}}>
                     <span className="clock_u">{this.state.hour}</span>
                     <span className="clock_u">:{this.state.minute}</span>
                     {
@@ -75,12 +81,13 @@ export default class UhrComp extends React.Component {
                 <br/>
             {
                 this.onlyDate &&
-                <span className="the_date" >
+                <span className="the_date" style={{color: this.state.props.dateColor}}>
                     <span className="date_u">{this.state.date}</span>
                 </span>
             }
             </div>
         </div>
         )
+
     }
 }
