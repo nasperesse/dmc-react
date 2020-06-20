@@ -1,0 +1,6 @@
+applications:
+- name: ractdmc
+  path: ./build/
+  memory: 50M
+  instances: 1
+  buildpack: https://github.com/cloudfoundry/staticfile-buildpack

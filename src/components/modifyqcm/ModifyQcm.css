@@ -1,0 +1,15 @@
+.mg {
+    margin-left: 0;
+}
+
+.settings {
+    min-height: 600px !important;
+}
+
+.row {
+    margin-top: 2rem;
+}
+
+.container {
+    margin-top: 1rem;
+}

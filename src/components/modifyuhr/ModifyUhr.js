@@ -12,9 +12,11 @@ class ModifyUhr extends React.Component {
             bgColor: '#a26849',
             clockColor: '#2a56ec',
             dateColor: '#aeec70',
+            dateSize: '13',
             showSecond: true,
             whatshow: 'clock_and_date',
-            dateFormat: 'MMM YYYY'
+            dateFormat: 'MMM YYYY',
+            fontFamilies: 'none'
 
         };
         this.state = { properties: this.uhrPersonalisation };
@@ -28,16 +30,12 @@ class ModifyUhr extends React.Component {
         if(e.target.getAttribute('type') === 'checkbox') {
             properties[`${attribute}`] = target.checked;
         } else {
-            console.log(attribute +" #### + "+ target.value)
             properties[`${attribute}`] = target.value;
         }
-
         this.setState({properties})
-        console.log(this.state.properties.whatshow)
     }
 
     render() {
-        console.log(this.state.properties.showSecond)
         return (
             <div id="modifyuhr" className="container">
                 <h5 className="text-center">Generate your digital Uhr</h5>
@@ -76,6 +74,10 @@ class ModifyUhr extends React.Component {
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                            <h3 for="formControlRange">Datum: Font-Size</h3>
+                            <input type="range" min="13" max="30" step="0.1" class="form-control-range" name="dateSize" onChange={this.handleChange.bind(this)} value={this.state.properties.dateSize}/>
+                        </div>
                             <div>
                                 <h3 class="optiontitle">Schriftfarbe</h3>
                                 <div class="optiondiv">
@@ -96,36 +98,51 @@ class ModifyUhr extends React.Component {
                         <div>
                             <h3 class="optiontitle">Schriftart</h3>
                             <div class="optiondiv">
-                                <select>
-                                    <option style={{ fontFamily: 'Verdana' }} id="Verdana">Verdana </option>
-                                    <option style={{ fontFamily: 'Georgia' }} id="Georgia">Georgia </option>
-                                    <option style={{ fontFamily: 'Arial' }} id="Arial">Arial </option>
-                                    <option style={{ fontFamily: 'Lemon' }} id="Lemon">Lemon </option>
-                                    <option style={{ fontFamily: 'Times' }} id="Nosifer Caps">Times </option>
-                                    <option style={{ fontFamily: 'Roman' }} id="Knewave">new Roman </option>
-                                    <option style={{ fontFamily: 'fantasy' }} id="Fascinate">fantasy </option>
-                                    <option style={{ fontFamily: 'Engagement' }} id="Engagement">Engagement </option>
-                                    <option style={{ fontFamily: 'Fresca' }} id="Fresca">Fresca </option>
-                                    <option style={{ fontFamily: 'cursive' }}>cursive</option>
-                                    <option style={{ fontFamily: 'Geostar Fill' }} id="Geostar Fill">Geostar Fill </option>
-                                    <option style={{ fontFamily: 'Cambria' }} id="Poller One">Cambria </option>
-                                    <option style={{ fontFamily: 'serif' }} id="League Script">serif </option>
-                                </select>
-                                <select name="boderstyle" id="borderstyle">
-                                    <option value="rounded" id="cl_rounded">Runde Ecken</option>
-                                    <option value="box" id="cl_box">Box</option>
+                                <select name="fontFamilies" onChange={this.handleChange.bind(this)} checked={this.state.properties.fontFamilies}>
+                                    <option value='Monospace' selected={this.state.properties.fontFamilies==="monospace"}>monospace </option>
+                                    <option value='sans-serif' selected={this.state.properties.fontFamilies==="sans-serif"}>sans-serif </option>
+                                    <option value='none' selected={this.state.properties.fontFamilies==="none"}>none </option>
+                                    <option value='fantasy' selected={this.state.properties.fontFamilies==="fantasy"}>fantasy </option>
+                                    <option value='cursive' selected={this.state.properties.fontFamilies==="cursive"}>cursive</option>
+                                    <option value='serif' selected={this.state.properties.fontFamilies==="serif"}>serif </option>
                                 </select>
                             </div>
+                        </div>
+                        <div style={{textAlign: 'right', margin: 0.5 +'rem'}}>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        generate your Clock
+                        </button>
+
                         </div>
                     </div>
                     <div className="col-md-3" style={{ margin: 'auto'}}>
                     <h3 class="text-center">Vorschau</h3>
                     {
                         this.state.properties &&
-                        <UhrComp dateFormat={this.state.properties.dateFormat} bgColor={this.state.properties.bgColor} clockColor={this.state.properties.clockColor} dateColor={this.state.properties.dateColor} showSecond={this.state.properties.showSecond} whatshow={this.state.properties.whatshow}/>
+                        <UhrComp fontFamilies={this.state.properties.fontFamilies} dateSize={this.state.properties.dateSize} dateFormat={this.state.properties.dateFormat} bgColor={this.state.properties.bgColor} clockColor={this.state.properties.clockColor} dateColor={this.state.properties.dateColor} showSecond={this.state.properties.showSecond} whatshow={this.state.properties.whatshow}/>
                     }
                     </div>
                 </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Paste this Code in your Page</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {`<react-uhr-comp fontFamilies="${this.state.properties.fontFamilies}" dateSize="${this.state.properties.dateSize}" dateFormat="${this.state.properties.dateFormat}" bgColor="${this.state.properties.bgColor}" clockColor="${this.state.properties.clockColor}" dateColor="${this.state.properties.dateColor}" showSecond="${this.state.properties.showSecond}" whatshow="${this.state.properties.whatshow}"></react-uhr-comp>
+          <script src="/dmc-react/build/static/js/test.js"></script>
+          <script src="/index.js"></script>`}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
             </div>
         );
     }

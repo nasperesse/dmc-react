@@ -1,5 +1,6 @@
 import React from 'react'
 import './QcmComp.css'
+import Style from 'style-it'
 class QcmComp extends React.Component {
 
     questions = [];
@@ -7,19 +8,36 @@ class QcmComp extends React.Component {
     output = [];
     index;
     showresult = false;
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
         this.index = 0;
-        this.output.push(<h1>Result of the Quiz</h1>);
-        this.state = { position: 0 };
+        this.output.push(<h1 className="textC">Result of the Quiz</h1>);
+        this.state = { position: 0, props: props, next: 'Next' };
     }
 
     componentWillMount() {
         if (this.props.quiz) {
-            this.props.quiz.map((q) => { console.log(q); this.questions.push(q); })
+            let temp = this.props.quiz;
+            if('string' === typeof temp) {
+                temp = JSON.parse(temp);
+            }
+            temp.map((q) => {this.questions.push(q); })
         }
     }
 
+    async componentWillReceiveProps( props ) {
+        this.props = props;
+        this.setState({props: props});
+        this.questions = [];
+        if (props.quiz) {
+            let temp = props.quiz;
+            if('string' === typeof temp) {
+                temp = JSON.parse(temp);
+            }
+            temp.map((q) => {this.questions.push(q); })
+        }
+      }
     next() {
         const form = document.querySelector("div#qcmcomp form");
         let end;
@@ -39,7 +57,6 @@ class QcmComp extends React.Component {
                 <div class="answers">your Answer: {end} </div>
             </div>
         );
-        console.log(this.index + " ++++++ " + this.questions.length + " ### " + decision)
         if (this.index < this.questions.length - 1) {
             this.index++
             this.setState({ position: this.index, showresult: false })
@@ -59,7 +76,7 @@ class QcmComp extends React.Component {
             this.setState({ showresult: true })
             this.output.push(
                 <div id="percent">
-                    <h4>Percent</h4>
+                    <h4 className="textC">Ergebnis</h4>
                     <span className="correct">Correct: {correctPercent} %</span>
                     <br />
                     <span className="notcorrect">Not Correct: {notCorrectPercent} %</span>
@@ -72,7 +89,56 @@ class QcmComp extends React.Component {
         console.log(" ----- " + this.state.showresult)
 
         return (
-            <div id="qcmcomp">
+            <Style>
+                {`
+                #qcmcomp {
+                width: 500px;
+                }
+                form {
+                text-align: justify;
+                padding-left: 2rem;
+                }
+                li {
+                list-style: none;
+                }
+                div.count {
+                text-align: right;
+                }
+                .textC {
+                    color: ${this.state.props.textColor};
+                }
+                div.button {
+                text-align: right;
+                }
+                div.slide {
+                margin-bottom: 1rem;
+                }
+                div#responce {
+                padding-left: 2rem;
+                padding-top: 2rem;
+                }
+                div#percent {
+                text-align: right;
+                }
+                span.correct {
+                font-weight: bold;
+                color: lightgreen;
+                }
+                span.notcorrect {
+                font-weight: bold;
+                color: red;
+                }
+
+                label {
+                margin-left: 0.5rem;
+                }
+
+                button {
+                margin-right: 0.5rem;
+                margin-bottom: 0.5rem;
+                }
+            `}
+            <div id="qcmcomp" style={{backgroundColor: this.state.props.bgColor}}>
                 {
                     this.questions.length === 0 &&
                     <div id="qcm">
@@ -84,20 +150,20 @@ class QcmComp extends React.Component {
                     !this.state.showresult && this.questions.length > 0 &&
                     <div id="qcm">
                         <div class="count">
-                            <span> {this.state.position + 1} / {this.questions.length} </span>
+                            <span className="textC"> {this.state.position + 1} / {this.questions.length} </span>
                         </div>
                         <form>
-                            <h4>{this.questions[this.state.position].frage}</h4>
+                            <h4 className="textC">{this.questions[this.state.position].frage}</h4>
                             {this.questions[this.state.position].ergebnisse.map(ergebnis => (
                                 <div>
-                                    <input type="radio" id={ergebnis.text} name="answer" value={ergebnis.text} />
-                                    <label>{ergebnis.text}</label>
+                                    <input className="textC" type="radio" id={ergebnis.text} name="answer" value={ergebnis.text} />
+                                    <label className="textC">{ergebnis.text}</label>
                                 </div>
                             )
                             )}
                             <br />
                             <div class="button">
-                                <button type="button" className="btn btn-success" onClick={this.next.bind(this)}>Next</button>
+                            <button type="button" className="btn btn-success" onClick={this.next.bind(this)}>{!this.state.props.next && this.state.next} {this.state.props.next && this.state.props.next}</button>
                             </div>
                         </form>
                     </div>
@@ -109,7 +175,7 @@ class QcmComp extends React.Component {
                     </div>
                 }
             </div>
-
+            </Style>
         );
     }
 }
