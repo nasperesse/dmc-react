@@ -6,6 +6,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import UhrComp from './components/uhrcomp/UhrComp';
 import QcmComp from './components/qcmcomp/QcmComp';
+import retargetEvents from 'react-shadow-dom-retarget-events';
 
 ReactDOM.render( < App / > , document.getElementById('root'));
 
@@ -19,7 +20,7 @@ class QuizzCustom extends HTMLElement {
     componentAttributes = {};
     componentProperties = {};
 
-    connectedCallback() {
+    createdCallback() {
         this.mountReactApp();
     }
 
@@ -49,15 +50,21 @@ class QuizzCustom extends HTMLElement {
 
     mountReactApp() {
         this.initProps()
-        if (!this.div) {
-            this.div = document.createElement('div');
-            this.div.setAttribute('id', 'root');
-            this.div.style.width = 'max-content';
-            this.div.style.height = 'max-content';
-            this.attachShadow({ mode: 'open' }).appendChild(this.div);
+        if (!this.mountEl) {
+            this.mountEl = document.createElement('div');
+            this.mountEl.style.width = 'max-content';
+            this.mountEl.style.height = 'max-content';
+            this.el = this.attachShadow({ mode: 'open' });
+            this.el.appendChild(this.mountEl);
         }
-        ReactDOM.render( < QcmComp {...this.reactProps() }
-            / > , this.div);
+        (document.onreadystatechange = () => {
+                if (document.readyState === "complete") {
+                    ReactDOM.render( < QcmComp {...this.reactProps() }
+                        / > , this.mountEl);
+
+                        retargetEvents(this.el);
+                    }
+                })();
         }
     }
 
@@ -106,12 +113,12 @@ class QuizzCustom extends HTMLElement {
                 this.div.style.width = 'max-content';
                 this.div.style.height = 'max-content';
                 this.attachShadow({ mode: 'open' }).appendChild(this.div);
-                console.log('####' + this.bgColor + "++" + JSON.stringify(this.componentAttributes))
             }
             ReactDOM.render( < UhrComp {...this.reactProps() }
                 / > , this.div);
             }
 
         }
+
         customElements.define('react-uhr-comp', UhrCustom)
         customElements.define('react-quizz-comp', QuizzCustom)

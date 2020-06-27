@@ -1,8 +1,7 @@
 import React from 'react';
 import Header from './../shared/header/Header';
-import Footer from './../shared/footer/Footer';
 import ShowComp from './../showcomp/ShowComp';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import ModifyUhr from '../modifyuhr/ModifyUhr';
 import ModifyQcm from '../modifyqcm/ModifyQcm';
 

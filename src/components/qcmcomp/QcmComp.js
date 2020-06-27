@@ -1,6 +1,8 @@
 import React from 'react'
 import './QcmComp.css'
 import Style from 'style-it'
+import ReactDOM from 'react-dom';
+
 class QcmComp extends React.Component {
 
     questions = [];
@@ -10,7 +12,6 @@ class QcmComp extends React.Component {
     showresult = false;
     constructor(props) {
         super(props);
-
         this.index = 0;
         this.output.push(<h1 className="textC">Result of the Quiz</h1>);
         this.state = { position: 0, props: props, next: 'Next' };
@@ -39,7 +40,8 @@ class QcmComp extends React.Component {
         }
       }
     next() {
-        const form = document.querySelector("div#qcmcomp form");
+        const node = ReactDOM.findDOMNode(this)
+        const form = node.querySelector("div#qcmcomp form");
         let end;
         let decision;
         const radios = form.answer;
@@ -82,11 +84,13 @@ class QcmComp extends React.Component {
                     <span className="notcorrect">Not Correct: {notCorrectPercent} %</span>
                 </div>
             );
+            console.log(this.output)
         }
     }
 
     render() {
         console.log(" ----- " + this.state.showresult)
+        console.log(this.output);
 
         return (
             <Style>

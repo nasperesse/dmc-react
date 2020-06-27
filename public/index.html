@@ -34,17 +34,20 @@
             left: 0;
             right: 0;
         }
-
+        
         a:hover {
             text-decoration: none;
         }
-
+        
         div#root {
             margin-bottom: 2rem;
         }
     </style>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <react-uhr-comp dateFormat="Do MMMM YYYY" bgColor="#7f68a2" clockColor="#0d1c4d" dateColor="#a72c16" showSecond="true" whatshow="clock_and_date"></react-uhr-comp>
+    <react-quizz-comp textColor="#f02828" bgColor="#151314" next="Weiter" quiz='[{"frage":"Wie heißt die Kanzlerin von Deutschland","ergebnisse":[{"text":"Angela Merkel","isCorrect":true},{"text":"Chritine lagard","isCorrect":false},{"text":"Von der Leyen","isCorrect":false},{"text":"Gabrielle Menne","isCorrect":false}]},{"frage":"Wie groß ist Kamerun","ergebnisse":[{"text":"15998","isCorrect":false},{"text":"32094832","isCorrect":false},{"text":"209872","isCorrect":true},{"text":"12365478","isCorrect":false}]}]'></react-quizz-comp>
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
