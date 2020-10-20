@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import UhrComp from './components/uhrcomp/UhrComp.js';
+import UhrComp from './components/uhrcomp/UhrComp';
 import QcmComp from './components/qcmcomp/QcmComp';
 import retargetEvents from 'react-shadow-dom-retarget-events';
 
