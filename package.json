@@ -29,7 +29,7 @@
         "typescript": "^3.9.5"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "node server/server.js",
         "clean": "rm -rf ./build/",
         "build": "react-scripts build && gulp",
         "test": "react-scripts test",
