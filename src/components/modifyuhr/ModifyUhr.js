@@ -134,8 +134,7 @@ class ModifyUhr extends React.Component {
       </div>
       <div class="modal-body">
         {`<react-uhr-comp fontFamilies="${this.state.properties.fontFamilies}" dateSize="${this.state.properties.dateSize}" dateFormat="${this.state.properties.dateFormat}" bgColor="${this.state.properties.bgColor}" clockColor="${this.state.properties.clockColor}" dateColor="${this.state.properties.dateColor}" showSecond="${this.state.properties.showSecond}" whatshow="${this.state.properties.whatshow}"></react-uhr-comp>
-          <script src="/dmc-react/build/static/js/test.js"></script>
-          <script src="/index.js"></script>`}
+          <script src="https://rawcdn.githack.com/nasperesse/dmc-react/2597596e269eb2563666114d5c4abf006f10b028/bundle.js"></script>`}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

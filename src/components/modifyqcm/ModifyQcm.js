@@ -240,9 +240,8 @@ class ModifyQcm extends React.Component {
         </button>
       </div>
       <div class="modal-body">
-        {`<react-quizz-comp textColor="${this.state.properties.textColor}" bgColor="${this.state.properties.bgColor}" next="${this.state.properties.next}" quiz="${JSON.stringify(this.state.quizz)}"></react-quizz-comp>
-          <script src="/dmc-react/build/static/js/test.js"></script>
-          <script src="/index.js"></script>`}
+        {`<react-quizz-comp textColor="${this.state.properties.textColor}" bgColor="${this.state.properties.bgColor}" next="${this.state.properties.next}" quiz='${JSON.stringify(this.state.quizz)}'></react-quizz-comp>
+          <script src="https://rawcdn.githack.com/nasperesse/dmc-react/2597596e269eb2563666114d5c4abf006f10b028/bundle.js"></script>`}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

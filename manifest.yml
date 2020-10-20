@@ -1,5 +1,5 @@
 applications:
-- name: ractdmc
+- name: reactdmc
   path: ./build/
   memory: 50M
   instances: 1
